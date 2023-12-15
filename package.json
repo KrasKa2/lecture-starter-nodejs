@@ -2,15 +2,18 @@
   "name": "nodejs-hometask",
   "version": "0.0.1",
   "description": "Hometask for NodeJS and express lecture",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
     "test": "sh -c 'env REPO_URL=$0 npx mocha tests/**/*.spec.js -R JSON --exit'",
     "test-local": "./node_modules/.bin/mocha tests/**/*.spec.js --exit -R JSON",
-    "start": "node index.js",
     "build-front": "cd client | ls",
     "feedback": "node ./feedback/index.js",
-    "generate": "npm run test-local | npm run feedback"
+    "generate": "npm run test-local | npm run feedback",
+
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon --config nodemon.json index.ts"
   },
   "keywords": [
     "NodeJS",
@@ -30,6 +33,11 @@
     "npm": "8.x.x"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.4",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3"
   }
 }
