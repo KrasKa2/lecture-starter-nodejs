@@ -21,11 +21,9 @@ export class StringFieldValidtor extends AbstractFieldValidator {
   }
 
   phone(countryCode: string | null = null) {
-    const countryCodeRegexp = countryCode
-      ? "^" + countryCode
-      : "^[+]?[(]?[0-9]{3}[)]?";
+    const countryCodeRegexp = countryCode ? "^" + countryCode : "^[+][0-9]{3}";
 
-    const regexp = countryCodeRegexp + "[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$";
+    const regexp = countryCodeRegexp + "[0-9]{9}$";
     this.#regexp = new RegExp(regexp);
     return this;
   }
