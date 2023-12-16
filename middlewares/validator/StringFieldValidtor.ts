@@ -3,6 +3,7 @@ import { AbstractFieldValidator } from "./AbstractFieldValidator";
 export class StringFieldValidtor extends AbstractFieldValidator {
   #isRequired: boolean = false;
   #regexp: RegExp | null = null;
+  #minLength: number | null = null;
 
   required(isRequired: boolean = true): StringFieldValidtor {
     this.#isRequired = isRequired;
@@ -28,6 +29,11 @@ export class StringFieldValidtor extends AbstractFieldValidator {
     return this;
   }
 
+  minLength(minLength: number) {
+    this.#minLength = minLength;
+    return this;
+  }
+
   #checkType(value: any) {
     if (value != undefined && typeof value !== "string") {
       this.error = `Field '${this.name}' must be a string!`;
@@ -46,12 +52,21 @@ export class StringFieldValidtor extends AbstractFieldValidator {
     }
   }
 
+  #checkMinLength(value: string) {
+    if (this.#minLength && value.length < this.#minLength) {
+      this.error = `Field '${this.name}' must has minimum ${
+        this.#minLength
+      } symbols!`;
+    }
+  }
+
   validate(value: any): StringFieldValidtor {
     this.#checkRequired(value);
     if (value === undefined) return this;
 
     this.error || this.#checkType(value);
     this.error || this.#checkRequired(value);
+    this.error || this.#checkMinLength(value);
     this.error || this.#checkRegexp(value);
     return this;
   }
