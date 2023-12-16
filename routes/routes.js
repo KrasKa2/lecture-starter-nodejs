@@ -1,4 +1,4 @@
-import { router as userRoutes } from "./userRoutes.js";
+import { router as userRoutes } from "./userRoutes.ts";
 import { router as authRoutes } from "./authRoutes.js";
 import { router as fighterRoutes } from "./fighterRoutes.js";
 import { router as fightRoutes } from "./fightRoutes.js";
