@@ -80,6 +80,14 @@ const updateUserValid = (req, res, next) => {
     res.status(400).send(JSON.stringify({ errors }));
   }
 
+  const updatingValues = [firstName, lastName, email, phoneNumber, password]
+    .filter(e => e != undefined);
+
+  if (!updatingValues.length) {
+    const error = "Must be at least one field for updating!"
+    res.status(400).send(JSON.stringify({ error }));
+  }  
+
   next();
 };
 
