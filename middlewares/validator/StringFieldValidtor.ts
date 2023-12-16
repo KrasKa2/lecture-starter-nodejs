@@ -49,7 +49,10 @@ export class StringFieldValidtor extends AbstractFieldValidator {
   }
 
   validate(value: any): StringFieldValidtor {
-    this.#checkType(value);
+    this.#checkRequired(value);
+    if (value === undefined) return this;
+
+    this.error || this.#checkType(value);
     this.error || this.#checkRequired(value);
     this.error || this.#checkRegexp(value);
     return this;

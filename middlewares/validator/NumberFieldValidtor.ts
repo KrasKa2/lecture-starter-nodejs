@@ -26,7 +26,7 @@ export class NumberFieldValidtor extends AbstractFieldValidator {
     }
   }
 
-  #checkRequired(value: number | undefined) {
+  #checkRequired(value: any) {
     if (this.#isRequired && value === undefined) {
       this.error = `Field '${this.name}' is required!`;
     }
@@ -45,8 +45,10 @@ export class NumberFieldValidtor extends AbstractFieldValidator {
   }
 
   validate(value: any): NumberFieldValidtor {
-    this.#checkType(value);
-    this.error || this.#checkRequired(value);
+    this.#checkRequired(value);
+    if (value === undefined) return this;
+
+    this.error || this.#checkType(value);
     this.error || this.#checkLessOrEqual(value);
     this.error || this.#checkMoreOrEqual(value);
     return this;
