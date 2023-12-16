@@ -3,7 +3,6 @@ import { userRepository } from "../repositories/userRepository.js";
 class UserService {
   // TODO: Implement methods to work with user
 
-
   getAll() {
     const users = userRepository.getAll();
     return users;
@@ -15,6 +14,16 @@ class UserService {
   }
 
   create(data) {
+    const { email, phoneNumber } = data;
+
+    if (userRepository.getOne({ email })) {
+      throw new Error(`User with email ${email} already exists!`);
+    }
+
+    if (userRepository.getOne({ phoneNumber })) {
+      throw new Error(`User with phoneNumber ${phoneNumber} already exists!`);
+    }
+    
     const user = userRepository.create(data);
     return user;
   }
