@@ -22,6 +22,13 @@ describe("StringFieldValidtor.required()", () => {
     expect(error).toMatch(/name.*required/);
   });
 
+  test("value = ['str'] ==> error", () => {
+    const value = ["str"];
+    const error = new StringFieldValidtor("name").validate(value).getError();
+
+    expect(error).toBe("Field 'name' must be a string!");
+  });
+
   test("value = 'string' ==> no errors", () => {
     const value = "string";
     const error = new StringFieldValidtor("name")
@@ -51,6 +58,6 @@ describe("StringFieldValidtor.email()", () => {
       .validate(value)
       .getError();
 
-    expect(error).toMatch(/Field \'email\' doesn\'t mutch/);
+    expect(error).toMatch(/Field \'email\' doesn\'t match/);
   });
 });

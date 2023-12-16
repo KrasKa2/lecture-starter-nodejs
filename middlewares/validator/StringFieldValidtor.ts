@@ -44,7 +44,7 @@ export class StringFieldValidtor extends AbstractFieldValidator {
 
   #checkRegexp(value: string) {
     if (this.#regexp && !this.#regexp.test(value)) {
-      this.error = `Field '${this.name}' doesn't mutch '${this.#regexp}'!`;
+      this.error = `Field '${this.name}' doesn't match '${this.#regexp}'!`;
     }
   }
 
