@@ -11,6 +11,9 @@ class UserService {
 
   getById(userId) {
     const user = this.search({ id: userId })
+    if (!user) {
+      throw ValidationError.notFoundError(`Not found user with id '${userId}'`);
+    }
     return user;
   }
 
@@ -47,7 +50,7 @@ class UserService {
   delete(id) {
     const user = this.getById(id);
     if (!user) {
-      throw Error(`There is no user with id = '${id}'`)
+      throw ValidationError.notFoundError(`Not found user with id '${id}'`);
     }
     userRepository.delete(id);
     return user;
