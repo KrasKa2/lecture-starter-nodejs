@@ -1,22 +1,22 @@
-import { AbstractFieldValidator } from "./AbstractFieldValidator";
+import { AbstractFieldValidator } from "./AbstractFieldValidator.js";
 
 export class StringFieldValidtor extends AbstractFieldValidator {
-  #isRequired: boolean = false;
-  #regexp: RegExp | null = null;
-  #regexpTitle: string | null = null;
-  #minLength: number | null = null;
+  #isRequired = false;
+  #regexp = null;
+  #regexpTitle = null;
+  #minLength = null;
 
-  required(isRequired: boolean = true): StringFieldValidtor {
+  required(isRequired = true) {
     this.#isRequired = isRequired;
     return this;
   }
 
-  match(regexp: RegExp) {
+  match(regexp) {
     this.#regexp = regexp;
     return this;
   }
 
-  email(domain: string | null = null, regexpTitle: string | null = null) {
+  email(domain = null, regexpTitle = null) {
     const domainRegexp = domain ? domain + "$" : "([\\w-]+.)+[\\w-]{2,4}$";
     this.#regexp = new RegExp("^[\\w-.]+@" + domainRegexp);
 
@@ -27,7 +27,7 @@ export class StringFieldValidtor extends AbstractFieldValidator {
     return this;
   }
 
-  phone(countryCode: string | null = null, regexpTitle: string | null = null) {
+  phone(countryCode = null, regexpTitle = null) {
     const countryCodeRegexp = countryCode ? "^" + countryCode : "^[+][0-9]{3}";
 
     const regexp = countryCodeRegexp + "[0-9]{9}$";
@@ -42,31 +42,31 @@ export class StringFieldValidtor extends AbstractFieldValidator {
     return this;
   }
 
-  minLength(minLength: number) {
+  minLength(minLength) {
     this.#minLength = minLength;
     return this;
   }
 
-  #checkType(value: any) {
+  #checkType(value) {
     if (value != undefined && typeof value !== "string") {
       this.error = `Field '${this.name}' must be a string!`;
     }
   }
 
-  #checkRequired(value: string | undefined) {
+  #checkRequired(value) {
     if (this.#isRequired && !value) {
       this.error = `Field '${this.name}' is required!`;
     }
   }
 
-  #checkRegexp(value: string) {
+  #checkRegexp(value) {
     if (this.#regexp && !this.#regexp.test(value)) {
       const regexpTitle = this.#regexpTitle || this.#regexp.toString();
       this.error = `Field '${this.name}' doesn't match '${regexpTitle}'!`;
     }
   }
 
-  #checkMinLength(value: string) {
+  #checkMinLength(value) {
     if (this.#minLength && value.length < this.#minLength) {
       this.error = `Field '${this.name}' must has minimum ${
         this.#minLength
@@ -74,7 +74,7 @@ export class StringFieldValidtor extends AbstractFieldValidator {
     }
   }
 
-  validate(value: any): StringFieldValidtor {
+  validate(value) {
     this.#checkRequired(value);
     if (value === undefined) return this;
 

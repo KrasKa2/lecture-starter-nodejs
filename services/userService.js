@@ -1,5 +1,5 @@
 import { userRepository } from "../repositories/userRepository.js";
-import { ValidationError } from '../middlewares/validator/ValidationError.ts';
+import { ValidationError } from '../middlewares/validator/ValidationError.js';
 
 class UserService {
 

@@ -1,50 +1,50 @@
-import { AbstractFieldValidator } from "./AbstractFieldValidator";
+import { AbstractFieldValidator } from "./AbstractFieldValidator.js";
 
 export class NumberFieldValidtor extends AbstractFieldValidator {
-  #isRequired: boolean = false;
-  #lessOrEqual: number | undefined;
-  #moreOrEqual: number | undefined;
+  #isRequired = false;
+  #lessOrEqual;
+  #moreOrEqual;
 
-  required(isRequired: boolean = true): NumberFieldValidtor {
+  required(isRequired = true) {
     this.#isRequired = isRequired;
     return this;
   }
 
-  lessOrEqual(lessOrEqual: number) {
+  lessOrEqual(lessOrEqual) {
     this.#lessOrEqual = lessOrEqual;
     return this;
   }
 
-  moreOrEqual(moreOrEqual: number) {
+  moreOrEqual(moreOrEqual) {
     this.#moreOrEqual = moreOrEqual;
     return this;
   }
 
-  #checkType(value: any) {
+  #checkType(value) {
     if (value !== undefined && typeof value !== "number") {
       this.error = `Field '${this.name}' must be a number!`;
     }
   }
 
-  #checkRequired(value: any) {
+  #checkRequired(value) {
     if (this.#isRequired && value === undefined) {
       this.error = `Field '${this.name}' is required!`;
     }
   }
 
-  #checkLessOrEqual(value: number) {
+  #checkLessOrEqual(value) {
     if (this.#lessOrEqual !== undefined && value > this.#lessOrEqual) {
       this.error = `Field '${this.name}' must be <= ${this.#lessOrEqual}!`;
     }
   }
 
-  #checkMoreOrEqual(value: number) {
+  #checkMoreOrEqual(value) {
     if (this.#moreOrEqual !== undefined && value < this.#moreOrEqual) {
       this.error = `Field '${this.name}' must be >= ${this.#moreOrEqual}!`;
     }
   }
 
-  validate(value: any): NumberFieldValidtor {
+  validate(value) {
     this.#checkRequired(value);
     if (value === undefined) return this;
 

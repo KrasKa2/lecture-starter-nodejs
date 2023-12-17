@@ -1,7 +1,7 @@
 import { USER } from "../models/user.js";
-import { StringFieldValidtor } from './validator/StringFieldValidtor.ts';
-import { ValidationError } from './validator/ValidationError.ts';
-import { FieldsValidator } from './validator/FieldsValidator.ts';
+import { StringFieldValidtor } from './validator/StringFieldValidtor.js';
+import { ValidationError } from './validator/ValidationError.js';
+import { FieldsValidator } from './validator/FieldsValidator.js';
 
 
 const EMAIL_DOMAIN = "gmail.com";

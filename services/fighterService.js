@@ -1,5 +1,5 @@
 import { fighterRepository } from "../repositories/fighterRepository.js";
-import { ValidationError } from '../middlewares/validator/ValidationError.ts';
+import { ValidationError } from '../middlewares/validator/ValidationError.js';
 
 class FighterService {
 

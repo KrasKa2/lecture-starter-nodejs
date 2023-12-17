@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { StringFieldValidtor } from "../middlewares/validator/StringFieldValidtor";
+import { StringFieldValidtor } from "../middlewares/validator/StringFieldValidtor.js";
 
 describe("PhoneFieldValidator", () => {
   const validator = () =>

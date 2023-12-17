@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { NumberFieldValidtor } from "../middlewares/validator/NumberFieldValidtor";
+import { NumberFieldValidtor } from "../middlewares/validator/NumberFieldValidtor.js";
 
 describe("PowerFieldValidator. power — число, 1 ≤ power ≤ 100", () => {
   const validator = () =>

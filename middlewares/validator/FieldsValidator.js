@@ -1,44 +1,42 @@
 export class FieldsValidator {
-  #model: Object;
-  //   #data: Object;
+  #model
 
-  #error: string | null = null;
+  #error = null;
 
-  #forbidRedundantFields: boolean = false;
-  #minCountFields: number = 0;
+  #forbidRedundantFields = false;
+  #minCountFields = 0;
 
-  constructor(model: Object) {
+  constructor(model) {
     this.#model = model;
-    // this.#data = data;
   }
 
-  forbidRedundantFields(forbid: boolean = true) {
+  forbidRedundantFields(forbid = true) {
     this.#forbidRedundantFields = forbid;
     return this;
   }
 
-  minCountFields(count: number) {
+  minCountFields(count) {
     this.#minCountFields = count;
     return this;
   }
 
-  validate(data: Object) {
+  validate(data) {
     this.#checkRedundantFields(data);
     this.#error || this.#checkCountFields(data);
     return this;
   }
 
-  getError(): string | null {
+  getError() {
     return this.#error;
   }
 
-  throwError(createError: (msg: string) => Error) {
+  throwError(createError) {
     if (this.#error) {
       throw createError(this.#error);
     }
   }
 
-  #checkRedundantFields(data: Object) {
+  #checkRedundantFields(data) {
     if (!this.#forbidRedundantFields) {
       return;
     }
@@ -56,7 +54,7 @@ export class FieldsValidator {
     }
   }
 
-  #checkCountFields(data: Object) {
+  #checkCountFields(data) {
     if (!this.#minCountFields) {
       return;
     }

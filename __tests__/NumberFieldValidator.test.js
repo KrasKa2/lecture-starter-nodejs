@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { NumberFieldValidtor } from "../middlewares/validator/NumberFieldValidtor";
+import { NumberFieldValidtor } from "../middlewares/validator/NumberFieldValidtor.js";
 
 // https://swizec.com/blog/how-to-configure-jest-with-typescript/
 

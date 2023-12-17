@@ -10,14 +10,13 @@ npm install
 npm run build
 cd ..
 npm install
-npm run build
 npm run start
 ```
 
-To run for developing (with rerun after changing files):
+To run jest tests:
 
 ```
-npm run dev
+npm run jtest
 ```
 
 Open [http://localhost:3080](http://localhost:3080)

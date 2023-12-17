@@ -1,8 +1,8 @@
 import { FIGHTER } from "../models/fighter.js";
-import { StringFieldValidtor } from './validator/StringFieldValidtor.ts';
-import { ValidationError } from './validator/ValidationError.ts';
-import { NumberFieldValidtor } from './validator/NumberFieldValidtor.ts';
-import { FieldsValidator } from './validator/FieldsValidator.ts';
+import { StringFieldValidtor } from './validator/StringFieldValidtor.js';
+import { ValidationError } from './validator/ValidationError.js';
+import { NumberFieldValidtor } from './validator/NumberFieldValidtor.js';
+import { FieldsValidator } from './validator/FieldsValidator.js';
 
 
 const createFighterValid = (req, res, next) => {
