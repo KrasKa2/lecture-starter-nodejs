@@ -34,13 +34,13 @@ const createUserValid = (req, res, next) => {
 
   new StringFieldValidtor("email")
     .required()
-    .email(EMAIL_DOMAIN)
+    .email(EMAIL_DOMAIN, "XXXXXX@gmail.com")
     .validate(email)
     .throwError(ValidationError.badRequestError);
 
   new StringFieldValidtor("phoneNumber")
     .required()
-    .phone(COUNTRY_CODE)
+    .phone(COUNTRY_CODE, "+380XXXXXXXXX")
     .validate(phoneNumber)
     .throwError(ValidationError.badRequestError);
 

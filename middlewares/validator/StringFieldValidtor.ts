@@ -3,6 +3,7 @@ import { AbstractFieldValidator } from "./AbstractFieldValidator";
 export class StringFieldValidtor extends AbstractFieldValidator {
   #isRequired: boolean = false;
   #regexp: RegExp | null = null;
+  #regexpTitle: string | null = null;
   #minLength: number | null = null;
 
   required(isRequired: boolean = true): StringFieldValidtor {
@@ -15,17 +16,29 @@ export class StringFieldValidtor extends AbstractFieldValidator {
     return this;
   }
 
-  email(domain: string | null = null) {
+  email(domain: string | null = null, regexpTitle: string | null = null) {
     const domainRegexp = domain ? domain + "$" : "([\\w-]+.)+[\\w-]{2,4}$";
     this.#regexp = new RegExp("^[\\w-.]+@" + domainRegexp);
+
+    if (regexpTitle) {
+      this.#regexpTitle = regexpTitle;
+    }
+
     return this;
   }
 
-  phone(countryCode: string | null = null) {
+  phone(countryCode: string | null = null, regexpTitle: string | null = null) {
     const countryCodeRegexp = countryCode ? "^" + countryCode : "^[+][0-9]{3}";
 
     const regexp = countryCodeRegexp + "[0-9]{9}$";
     this.#regexp = new RegExp(regexp);
+
+    if (regexpTitle) {
+      this.#regexpTitle = regexpTitle;
+    } else {
+      this.#regexpTitle = "+XXXXXXXXXXXX";
+    }
+
     return this;
   }
 
@@ -48,7 +61,8 @@ export class StringFieldValidtor extends AbstractFieldValidator {
 
   #checkRegexp(value: string) {
     if (this.#regexp && !this.#regexp.test(value)) {
-      this.error = `Field '${this.name}' doesn't match '${this.#regexp}'!`;
+      const regexpTitle = this.#regexpTitle || this.#regexp.toString();
+      this.error = `Field '${this.name}' doesn't match '${regexpTitle}'!`;
     }
   }
 
