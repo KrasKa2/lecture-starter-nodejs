@@ -23,16 +23,19 @@ router.get("/:id", function (req, res, next) {
 router.post("/", createUserValid, function (req, res, next) {
   const user = userService.create(req.body);
   res.send(user);
+  next();
 });
 
 router.put("/:id", updateUserValid, function (req, res, next) {
   const user = userService.update(req.params.id, req.body);
   res.send(user);
+  next();
 });
 
 router.delete("/:id", function (req, res, next) {
   const user = userService.delete(req.params.id);
   res.send(user);
+  next();
 });
 
 router.use(responseMiddleware);
