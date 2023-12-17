@@ -6,11 +6,9 @@ import { ValidationError } from './validator/ValidationError.ts';
 const EMAIL_DOMAIN = "gmail.com";
 const COUNTRY_CODE = "[+]380";
 
-const BAD_REQUEST_ERROR = 400;
-
 const createError = (messge) => {
-  return new ValidationError(messge, BAD_REQUEST_ERROR);
-}
+  return new ValidationError(messge);
+};
 
 const checkRedundantFields = (data) => {
   const userFields = Object.keys(USER);

@@ -1,4 +1,5 @@
 import { userRepository } from "../repositories/userRepository.js";
+import { ValidationError } from '../middlewares/validator/ValidationError.ts';
 
 class UserService {
   // TODO: Implement methods to work with user
@@ -17,11 +18,11 @@ class UserService {
     const { email, phoneNumber } = data;
 
     if (userRepository.getOne({ email })) {
-      throw new Error(`User with email ${email} already exists!`);
+      throw new ValidationError(`User with email ${email} already exists!`);
     }
 
     if (userRepository.getOne({ phoneNumber })) {
-      throw new Error(`User with phoneNumber ${phoneNumber} already exists!`);
+      throw new ValidationError(`User with phoneNumber ${phoneNumber} already exists!`);
     }
     
     const user = userRepository.create(data);
@@ -29,8 +30,18 @@ class UserService {
   }
 
   update(id, data) {
-    const user = userRepository.update(id, data);
-    return user;
+    const { email, phoneNumber } = data;
+
+    let user = email && userRepository.getOne({ email });
+    if (user && user.id != id) {
+      throw new ValidationError(`User with email ${email} already exists!`);
+    }
+
+    user = phoneNumber && userRepository.getOne({ phoneNumber });
+    if (user && user.id != id) {
+      throw new ValidationError(`User with phoneNumber ${phoneNumber} already exists!`);
+    }
+    return userRepository.update(id, data);
   }
 
   delete(id) {
@@ -41,6 +52,7 @@ class UserService {
     userRepository.delete(id);
     return user;
   }
+
   search(search) {
     const item = userRepository.getOne(search);
     if (!item) {
