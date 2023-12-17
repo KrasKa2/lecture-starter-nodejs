@@ -1,112 +1,100 @@
 import { USER } from "../models/user.js";
-import { StringFieldValidtor } from './validator/StringFieldValidtor.ts'
+import { StringFieldValidtor } from './validator/StringFieldValidtor.ts';
+import { ValidationError } from './validator/ValidationError.ts';
 
 
 const EMAIL_DOMAIN = "gmail.com";
 const COUNTRY_CODE = "[+]380";
 
+const BAD_REQUEST_ERROR = 400;
+
+const createError = (messge) => {
+  return new ValidationError(messge, BAD_REQUEST_ERROR);
+}
+
 const checkRedundantFields = (data) => {
   const userFields = Object.keys(USER);
-  const redundantFields = Object.keys(data).filter(field => !userFields.includes(field));
-  const error = redundantFields.length ? 
-    `Redundant fields: ${redundantFields.join(", ")}` : 
-    null;
-  return error;  
+  const redundantFields = Object.keys(data)
+    .filter(field => !userFields.includes(field));
+  if (redundantFields.length) {
+    throw createError(`Redundant fields: ${redundantFields.join(", ")}`);
+  } 
 }
 
 const createUserValid = (req, res, next) => {
-  
-  const error = checkRedundantFields(req.body);
-  if (error) {
-    res.status(400).send(JSON.stringify({ error })); 
-    return;
-  }
+
+  checkRedundantFields(req.body);
 
   const { firstName, lastName, email, phoneNumber, password } = req.body;
 
-  const firstNameValidator = new StringFieldValidtor("firstName")
+  new StringFieldValidtor("firstName")
     .required()
-    .validate(firstName);
+    .validate(firstName)
+    .throwError(createError);
 
-  const lastNameValidator = new StringFieldValidtor("lastName")
+  new StringFieldValidtor("lastName")
     .required()
-    .validate(lastName);
+    .validate(lastName)
+    .throwError(createError);
 
-  const emailValidator = new StringFieldValidtor("email")
+  new StringFieldValidtor("email")
     .required()
     .email(EMAIL_DOMAIN)
-    .validate(email);
+    .validate(email)
+    .throwError(createError);
 
-  const phoneNumberValidator = new StringFieldValidtor("phoneNumber")
+  new StringFieldValidtor("phoneNumber")
     .required()
     .phone(COUNTRY_CODE)
-    .validate(phoneNumber);
+    .validate(phoneNumber)
+    .throwError(createError);
 
-  const passwordValidator = new StringFieldValidtor("password")
+  new StringFieldValidtor("password")
     .required()
     .minLength(3)
-    .validate(password);
-  
-  const errors = [
-    firstNameValidator.getError(),
-    lastNameValidator.getError(),
-    emailValidator.getError(),
-    phoneNumberValidator.getError(),
-    passwordValidator.getError()
-  ].filter(e => e);
+    .validate(password)
+    .throwError(createError);
 
-  if (errors.length) {
-    res.status(400).send(JSON.stringify({ errors }));
-  } else {
-    next();
-  }
+  next();
 };
 
 const checkCountFields = (data) => {
-  return !Object.keys(data).length ?  "Must be at least one field for updating!" : null;
+  if (!Object.keys(data).length) {
+    throw createError("Must be at least one field for updating!");
+  }
 }
 
 const updateUserValid = (req, res, next) => {
 
-  const error = checkRedundantFields(req.body) || checkCountFields(req.body);
-  if (error) {
-    res.status(400).send(JSON.stringify({ error })); 
-    return;
-  } 
+  checkRedundantFields(req.body);
+  checkCountFields(req.body);
 
   const { firstName, lastName, email, phoneNumber, password } = req.body;
 
-  const firstNameValidator = new StringFieldValidtor("firstName")
-    .validate(firstName);
+  new StringFieldValidtor("firstName")
+    .validate(firstName)
+    .throwError(createError);
 
-  const lastNameValidator = new StringFieldValidtor("lastName")
-    .validate(lastName);
+  new StringFieldValidtor("lastName")
+    .validate(lastName)
+    .throwError(createError);
     
-  const emailValidator = new StringFieldValidtor("email")
+  new StringFieldValidtor("email")
     .email(EMAIL_DOMAIN)
-    .validate(email);
+    .validate(email)
+    .throwError(createError);
 
-  const phoneNumberValidator = new StringFieldValidtor("phoneNumber")
+  new StringFieldValidtor("phoneNumber")
     .phone(COUNTRY_CODE)
-    .validate(phoneNumber);
+    .validate(phoneNumber)
+    .throwError(createError);
 
-  const passwordValidator = new StringFieldValidtor("password")
+  new StringFieldValidtor("password")
     .minLength(3)
-    .validate(password);
+    .validate(password)
+    .throwError(createError);
 
-  const errors = [
-    firstNameValidator.getError(),
-    lastNameValidator.getError(),
-    emailValidator.getError(),
-    phoneNumberValidator.getError(),
-    passwordValidator.getError()
-  ].filter(e => e);
-
-  if (errors.length) {
-    res.status(400).send(JSON.stringify({ errors }));
-  } else {
-    next();
-  }
+  next();
 };
 
 export { createUserValid, updateUserValid };

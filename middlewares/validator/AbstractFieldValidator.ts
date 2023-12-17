@@ -21,6 +21,12 @@ export abstract class AbstractFieldValidator {
   getError(): string | null {
     return this.#error;
   }
+
+  throwError(createError: (msg: string) => Error) {
+    if (this.#error) {
+      throw createError(this.#error);
+    }
+  }
 }
 
 // function checkRequired(name: string, value: any): string | null {

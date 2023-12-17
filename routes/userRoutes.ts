@@ -8,31 +8,33 @@ import { responseMiddleware } from "../middlewares/response.middleware.js";
 
 const router = Router();
 
-// TODO: Implement route controllers for user
-
-router.get("/", createUserValid, function (req, res, next) {
+router.get("/", function (req, res, next) {
   const users = userService.getAll();
-  res.send(JSON.stringify(users));
+  res.send(users);
+  next();
 });
 
 router.get("/:id", function (req, res, next) {
   const user = userService.getById(req.params.id);
-  res.send(JSON.stringify(user));
+  res.send(user);
+  next();
 });
 
 router.post("/", createUserValid, function (req, res, next) {
   const user = userService.create(req.body);
-  res.send(JSON.stringify(user));
+  res.send(user);
 });
 
 router.put("/:id", updateUserValid, function (req, res, next) {
   const user = userService.update(req.params.id, req.body);
-  res.send(JSON.stringify(user));
+  res.send(user);
 });
 
 router.delete("/:id", function (req, res, next) {
-  const resp = userService.delete(req.params.id);
-  res.send(JSON.stringify(resp));
+  const user = userService.delete(req.params.id);
+  res.send(user);
 });
+
+router.use(responseMiddleware);
 
 export { router };
