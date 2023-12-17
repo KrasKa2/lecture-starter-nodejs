@@ -2,7 +2,6 @@ import { userRepository } from "../repositories/userRepository.js";
 import { ValidationError } from '../middlewares/validator/ValidationError.ts';
 
 class UserService {
-  // TODO: Implement methods to work with user
 
   getAll() {
     const users = userRepository.getAll();
