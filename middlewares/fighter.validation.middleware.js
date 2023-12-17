@@ -2,9 +2,16 @@ import { FIGHTER } from "../models/fighter.js";
 import { StringFieldValidtor } from './validator/StringFieldValidtor.ts';
 import { ValidationError } from './validator/ValidationError.ts';
 import { NumberFieldValidtor } from './validator/NumberFieldValidtor.ts';
+import { FieldsValidator } from './validator/FieldsValidator.ts';
+
 
 const createFighterValid = (req, res, next) => {
   
+  new FieldsValidator(FIGHTER)
+    .forbidRedundantFields()
+    .validate(req.body)
+    .throwError(ValidationError.badRequestError);
+
   const { name, health, power, defense } = req.body;
 
   new StringFieldValidtor("name")
@@ -38,6 +45,12 @@ const createFighterValid = (req, res, next) => {
 
 const updateFighterValid = (req, res, next) => {
   
+  new FieldsValidator(FIGHTER)
+    .forbidRedundantFields()
+    .minCountFields(1)
+    .validate(req.body)
+    .throwError(ValidationError.badRequestError);
+
   const { name, health, power, defense } = req.body;
 
   new StringFieldValidtor("name")

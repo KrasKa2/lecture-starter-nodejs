@@ -1,24 +1,18 @@
 import { USER } from "../models/user.js";
 import { StringFieldValidtor } from './validator/StringFieldValidtor.ts';
 import { ValidationError } from './validator/ValidationError.ts';
+import { FieldsValidator } from './validator/FieldsValidator.ts';
 
 
 const EMAIL_DOMAIN = "gmail.com";
 const COUNTRY_CODE = "[+]380";
 
-
-const checkRedundantFields = (data) => {
-  const userFields = Object.keys(USER).filter(field => field != 'id');
-  const redundantFields = Object.keys(data)
-    .filter(field => !userFields.includes(field));
-  if (redundantFields.length) {
-    throw ValidationError.badRequestError(`Redundant fields: ${redundantFields.join(", ")}`);
-  } 
-}
-
 const createUserValid = (req, res, next) => {
 
-  checkRedundantFields(req.body);
+  new FieldsValidator(USER)
+    .forbidRedundantFields()
+    .validate(req.body)
+    .throwError(ValidationError.badRequestError);
 
   const { firstName, lastName, email, phoneNumber, password } = req.body;
 
@@ -53,16 +47,13 @@ const createUserValid = (req, res, next) => {
   next();
 };
 
-const checkCountFields = (data) => {
-  if (!Object.keys(data).length) {
-    throw ValidationError.badRequestError("Must be at least one field for updating!");
-  }
-}
-
 const updateUserValid = (req, res, next) => {
 
-  checkRedundantFields(req.body);
-  checkCountFields(req.body);
+  new FieldsValidator(USER)
+    .forbidRedundantFields()
+    .minCountFields(1)
+    .validate(req.body)
+    .throwError(ValidationError.badRequestError);
 
   const { firstName, lastName, email, phoneNumber, password } = req.body;
 
@@ -75,12 +66,12 @@ const updateUserValid = (req, res, next) => {
     .throwError(ValidationError.badRequestError);
     
   new StringFieldValidtor("email")
-    .email(EMAIL_DOMAIN)
+    .email(EMAIL_DOMAIN, "XXXXXX@gmail.com")
     .validate(email)
     .throwError(ValidationError.badRequestError);
 
   new StringFieldValidtor("phoneNumber")
-    .phone(COUNTRY_CODE)
+    .phone(COUNTRY_CODE, "+380XXXXXXXXX")
     .validate(phoneNumber)
     .throwError(ValidationError.badRequestError);
 

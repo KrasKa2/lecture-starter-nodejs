@@ -56,7 +56,6 @@ class FighterService {
 
   getAnotherFighterWithName(id, name) {
     const fighters = this.caseInsencetiveSearch("name", name);
-    console.log(id, name, "fighters = ", fighters);
     return fighters.find(fighter => fighter.id != id);
   }
 
